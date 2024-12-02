@@ -9,5 +9,4 @@ Link to Slidedeck: https://docs.google.com/presentation/d/1spe7nQsxPNm-JEQYdvFuq
 
 Link to Video Presentation: https://www.youtube.com/watch?v=Rjsi4xHoeV8
 
-<font=10px>*Due to file size restrictions on Github, I am unable to upload the file where my model is saved. On my local device, this path is saved as 'fashion-classifier.pth'*</font>
-<span style="font-size: 10px; font-style: italic;">Due to file size restrictions on Github, I am unable to upload the file where my model is saved. On my local device, this path is saved as 'fashion-classifier.pth'</span>
+<small>*Due to file size restrictions on Github, I am unable to upload the file where my model is saved. On my local device, this path is saved as 'fashion-classifier.pth'*</small>
