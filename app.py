@@ -11,7 +11,7 @@ import torch
 import torch.nn.functional as F
 
 
-#labels of the numbers it gives
+#labels of the class the predict function returns
 class_labels = [
     "Accessories",  # Class 0 
     "Apparel",    # Class 1
@@ -52,23 +52,18 @@ def allowed_file(filename):
 
 
 def predict_image(image):
-    # Image pre-processing
+    #image pre-processing
     image = image.convert('RGB')
-    image = transform(image).unsqueeze(0)  # Apply necessary transformations and add batch dimension
+    image = transform(image).unsqueeze(0)
 
     with torch.no_grad():
-        # Forward pass through the model
-        output = model(image)  # The output contains 'logits'
+        output = model(image)
 
-    logits = output.logits  # Raw logits from the model
+    logits = output.logits
 
-    # Apply softmax to the logits to get probabilities
+    #softmax -- get probabilities
     probabilities = F.softmax(logits, dim=-1)
-
-    # Get the predicted class (the class with the highest probability)
-    _, predicted_class = torch.max(probabilities, 1)
-
-    # Get the confidence by the highest probability
+    _, predicted_class = torch.max(probabilities, 1) #highest probability
     confidence = probabilities[0, predicted_class].item()
 
     return predicted_class.item(), confidence
@@ -88,7 +83,7 @@ def predict():
     if file.filename == '' or not allowed_file(file.filename):
         return jsonify({'error': 'Invalid file format'}), 400
     
-    # Process image
+    #process image
     image = Image.open(file.stream)
     predicted_class, confidence = predict_image(image)
     return jsonify({'prediction': class_labels[predicted_class], 'confidence': confidence})
