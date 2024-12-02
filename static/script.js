@@ -1,4 +1,4 @@
-// Drag & Drop functionality
+//drag & drop
 const dropTarget = document.getElementById('dropTarget');
 const fileInput = document.getElementById('fileInput');
 const imagePreview = document.getElementById('imagePreview');
@@ -6,7 +6,7 @@ const resultCard = document.getElementById('resultCard');
 const resultLabel = document.getElementById('resultLabel');
 const resultConfidence = document.getElementById('resultConfidence');
 
-// Handle file upload or drag-and-drop
+//file upload or drag-and-drop
 fileInput.addEventListener('change', handleFileUpload);
 dropTarget.addEventListener('dragover', handleDragOver);
 dropTarget.addEventListener('drop', handleFileDrop);
@@ -109,7 +109,7 @@ function displayResults(prediction) {
             message = `Sorry, this item doesn't fit into one of our categories. But we're sure your creativity can come up with a way to upcycle this!`;
         }
     
-        // Update the message text content with line breaks
-        resultConfidence.innerHTML = message; // Use innerHTML to allow <br> tags to be rendered properly
+        //update the message text content
+        resultConfidence.innerHTML = message;
     }
 
