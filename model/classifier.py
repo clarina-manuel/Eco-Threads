@@ -2,32 +2,22 @@ from collections import Counter
 import torch.multiprocessing as mp
 mp.set_start_method('spawn', force=True)
 
-from datasets import DatasetDict
-from transformers import ViTImageProcessor, AutoModelForImageClassification
+from datasets import DatasetDict, Dataset, load_dataset
+from transformers import ViTImageProcessor, AutoModelForImageClassification, AutoTokenizer
 import torch
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 import torch.nn as nn
 from torch.optim import AdamW
 from tqdm import tqdm
 from sklearn.metrics import accuracy_score
-from datasets import load_dataset
+from sklearn.preprocessing import LabelEncoder
 from PIL import Image
 import requests
-from datasets import DatasetDict
-from datasets import Dataset
-from transformers import AutoTokenizer
-from transformers import ViTImageProcessor, AutoModelForImageClassification
-from sklearn.preprocessing import LabelEncoder
-from torch.utils.data import Dataset
-from torchvision import transforms
-from PIL import Image
-import torch
-import torch.optim as optim
-import torch.nn as nn
-from transformers import AutoModelForImageClassification
 import os
-
+import random
+from sklearn.utils import shuffle
+import torch.optim as optim
 
 #load dataset
 ds = load_dataset("ashraq/fashion-product-images-small")
@@ -56,20 +46,6 @@ transform = transforms.Compose([
 ])
 
 #custom dataset class
-import torch
-import random
-from torch.utils.data import Dataset, DataLoader
-from sklearn.utils import shuffle
-
-
-import random
-from sklearn.preprocessing import LabelEncoder
-from torch.utils.data import Dataset
-from torchvision import transforms
-from sklearn.utils import shuffle
-import torch
-
-
 class FashionDataset(Dataset):
     def __init__(self, dataset, transform=None, undersample=False, max_class_0_samples=8000):
         self.dataset = dataset
