@@ -72,13 +72,6 @@ import torch
 
 class FashionDataset(Dataset):
     def __init__(self, dataset, transform=None, undersample=False, max_class_0_samples=8000):
-        """
-        Args:
-            dataset (list of dict): Dataset with image paths and labels.
-            transform (callable, optional): Transform to be applied on the image.
-            undersample (bool): Whether to undersample the majority class.
-            max_class_0_samples (int): Maximum number of samples to keep from class 0 (for undersampling).
-        """
         self.dataset = dataset
         self.transform = transform
         self.image_column = 'image'
@@ -86,11 +79,11 @@ class FashionDataset(Dataset):
         self.undersample = undersample
         self.max_class_0_samples = max_class_0_samples
 
-        # Apply undersampling if needed
+        #undersampling
         if self.undersample:
             self.dataset = self.undersample_data(self.dataset)
 
-        # Initialize the label encoder
+        #label encoder
         self.label_encoder = LabelEncoder()
         self.label_encoder.fit([sample[self.label_column] for sample in self.dataset])  # Fit label encoder
 
@@ -101,7 +94,7 @@ class FashionDataset(Dataset):
         image = self.dataset[idx][self.image_column]
         label = self.dataset[idx][self.label_column]
 
-        # label encoding
+        #label encoding
         label = self.label_encoder.transform([label])[0]
 
         if isinstance(image, torch.Tensor):
@@ -114,20 +107,14 @@ class FashionDataset(Dataset):
         return image, label
     
     def undersample_data(self, dataset):
-        """
-        Undersample the majority class (Class 0 - 'Apparel') to have at most 8000 samples.
-        """
-        # Separate class 0 samples and other class samples
+        #separate apparel class (class 0) samples
         class_0_samples = [sample for sample in dataset if sample[self.label_column] == 'Apparel']
         other_class_samples = [sample for sample in dataset if sample[self.label_column] != 'Apparel']
 
-        # Undersample class 0 to have at most 8000 samples
+        #undersample apparel class to 8000 samples + combine + shuffle
         class_0_samples = random.sample(class_0_samples, min(len(class_0_samples), self.max_class_0_samples))
-
-        # Combine the undersampled class 0 samples with other class samples
         undersampled_data = class_0_samples + other_class_samples
 
-        # Shuffle the dataset to ensure randomness
         undersampled_data = shuffle(undersampled_data, random_state=42)
 
         return undersampled_data
@@ -144,7 +131,7 @@ train_dataset = FashionDataset(
 test_dataset = FashionDataset(test_data, transform=transform)
 
 
-# Check the distribution of classes in the undersampled dataset
+#distribution after undersampling
 class_distribution = {}
 for sample in train_dataset.dataset:
     label = sample['masterCategory']
@@ -198,16 +185,16 @@ class_weights = torch.tensor(class_weights).float()
 
 print("Class Weights:", class_weights)
 
-# Initialize the model and move to device (GPU/CPU)
+#initialize the model
 model_name = "google/vit-base-patch16-224-in21k"
 model = AutoModelForImageClassification.from_pretrained(model_name, num_labels=7)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
-# Define the loss function with class weights
+#loss function with class weights
 criterion = nn.CrossEntropyLoss(weight=class_weights.to(device))
 
-# Define the optimizer
+#optimizer
 optimizer = optim.AdamW(model.parameters(), lr=1e-5)
 
 unique_labels = set(train_data['masterCategory'])
