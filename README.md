@@ -7,6 +7,6 @@ Did you know that clothes and other textiles are the most purchased products in 
 
 Link to Slidedeck: https://docs.google.com/presentation/d/1spe7nQsxPNm-JEQYdvFuqjai2PHskKbjhXWf7QXtm90/edit?usp=sharing
 
-Link to Video Presentation: https://www.youtube.com/watch?v=Rjsi4xHoeV8
+Link to Video Presentation: [https://www.youtube.com/watch?v=Rjsi4xHoeV8](https://youtu.be/D989IHhLFdc)
 
 <small>*Due to file size restrictions on Github, I am unable to upload the file where my model is saved. On my local device, this path is saved as 'fashion-classifier.pth'*</small>
